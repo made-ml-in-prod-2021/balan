@@ -1,9 +1,11 @@
+import yaml
 from dataclasses import dataclass
+
+from marshmallow_dataclass import class_schema
+
 from .split_params import SplittingParams
 from .transformer_params import TransformerParams
 from .train_params import TrainingParams
-from marshmallow_dataclass import class_schema
-import yaml
 
 
 @dataclass

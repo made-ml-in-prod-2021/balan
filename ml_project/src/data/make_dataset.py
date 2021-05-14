@@ -4,11 +4,10 @@ from typing import Tuple
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
-from src.params import SplittingParams
+from ..params import SplittingParams
 
 
 logger = logging.getLogger(__name__)
-# logger = logging.getLogger("ml-in-prod-hw1.preprocessing.make_dataset")
 
 
 def load_data(path: str) -> pd.DataFrame:

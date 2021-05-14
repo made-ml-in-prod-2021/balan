@@ -1,9 +1,11 @@
 import pickle
 import logging
 import pandas as pd
+
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.preprocessing import StandardScaler
-from src.params import TransformerParams
+
+from ..params import TransformerParams
 
 
 logger = logging.getLogger(__name__)

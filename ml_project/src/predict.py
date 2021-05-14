@@ -1,10 +1,11 @@
-import click
 import pickle
+
+import click
 import pandas as pd
 
-from src.data import load_data
-from src.features import split_features_target
-from src.model import predict_model
+from .data import load_data
+from .features import split_features_target
+from .model import predict_model
 
 
 def predict_process(model, transformer, data: pd.DataFrame) -> pd.Series:

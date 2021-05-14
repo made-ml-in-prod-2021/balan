@@ -1,12 +1,13 @@
 import sys
 import json
 import logging
+
 import click
 
-from src.data import load_data, split_train_val_data
-from src.params.pipeline_params import PipelineParams, read_training_pipeline_params
-from src.features import split_features_target, DataTransformer
-from src.model import (
+from .data import load_data, split_train_val_data
+from .params.pipeline_params import PipelineParams, read_training_pipeline_params
+from .features import split_features_target, DataTransformer
+from .model import (
     fit_model,
     predict_model,
     evaluate_model,

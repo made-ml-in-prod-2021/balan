@@ -1,8 +1,10 @@
 import os
 import pytest
+
 import pandas as pd
+
 from src.params import TransformerParams
-from tests.utils import make_synthetic_data
+from .utils import make_synthetic_data
 
 
 @pytest.fixture()
