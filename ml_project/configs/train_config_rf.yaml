@@ -1,0 +1,12 @@
+input_data_path: "data/raw/heart.csv"
+output_model_path: "models/model.pkl"
+transformer_path: "models/transformer.pkl"
+target_name: "target"
+metric_path: "models/metrics.json"
+splitting_params:
+  test_size: 0.2
+  random_state: 13
+transformer_params:
+  use_scaler: False
+train_params:
+  model_type: "RandomForestClassifier"
