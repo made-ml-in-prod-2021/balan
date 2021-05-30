@@ -60,4 +60,4 @@ https://fastapi.tiangolo.com/tutorial/handling-errors/ -- возращайте 4
 
 [✅] создайте пулл-реквест и поставьте label -- hw2
 
-Получилось баллов: 17
+Получилось баллов: 22
