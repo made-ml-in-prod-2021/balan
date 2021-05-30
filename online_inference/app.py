@@ -2,13 +2,14 @@ import os
 import logging
 from typing import List, Optional
 
-import pandas as pd
 import uvicorn
 from fastapi import FastAPI, HTTPException
 from sklearn.pipeline import Pipeline
 
+
 from src.entities import HeartDiseaseModel, DiseaseResponse
 from src.model_routines import load_model_from_path
+from src.data_validation import prepare_and_validate_data
 
 
 logger = logging.getLogger(__name__)
@@ -17,23 +18,18 @@ model: Optional[Pipeline] = None
 
 
 def make_predict(
-    data: List,
-    features: List[str],
-    model: Pipeline,
+    request: HeartDiseaseModel,
 ) -> List[DiseaseResponse]:
+    global model
     try:
-        data = pd.DataFrame(data, columns=features)
-        ids = [int(x) for x in data["id"]]
-        data.drop(columns=["id"], inplace=True)
-        if "target" in features:
-            data.drop(columns=["target"], inplace=True)
+        data = prepare_and_validate_data(request)
         prediction = model.predict(data)
-
         return [
-            DiseaseResponse(id=id_, disease=disease) for id_, disease in zip(ids, prediction)
+            DiseaseResponse(id=id_+1, disease=disease) for id_, disease in enumerate(prediction)
         ]
-
-    except Exception as e:
+    except HTTPException as e:
+        raise e
+    except Exception:
         raise HTTPException(status_code=400)
 
 
@@ -61,9 +57,10 @@ def health() -> bool:
     return not (model is None)
 
 
-@app.get("/predict/", response_model=List[DiseaseResponse])
+@app.post("/predict/", response_model=List[DiseaseResponse])
 def predict(request: HeartDiseaseModel):
-    return make_predict(request.data, request.features, model)
+    global model
+    return make_predict(request)
 
 
 if __name__ == "__main__":
