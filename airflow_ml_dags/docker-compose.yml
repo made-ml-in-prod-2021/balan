@@ -86,7 +86,7 @@ services:
       context: images/airflow-process
     image: airflow-process
     restart: "no"
-    
+
   predict:
     build:
       context: images/airflow-predict
