@@ -1,6 +1,6 @@
-import os
 from datetime import timedelta
 
+from airflow.models import Variable
 from airflow.utils.dates import days_ago
 
 
@@ -20,7 +20,8 @@ DATA_PROCESSED_DIR = "/data/processed/{{ ds }}"
 DATA_MODELS_DIR = "/data/models/{{ ds }}"
 DATA_PREDICTIONS_DIR = "/data/predictions/{{ ds }}"
 
-MODEL_PATH = os.environ["MODEL_PATH"]
+MODEL_PATH = Variable.get("model_path")
+# MODEL_PATH = os.environ["MODEL_PATH"]
 
 VAL_SIZE = 0.2
 RANDOM_SEED = 13
