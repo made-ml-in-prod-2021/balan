@@ -1,11 +1,11 @@
 import os
+import time
 import logging
 from typing import List, Optional
 
 import uvicorn
 from fastapi import FastAPI, HTTPException
 from sklearn.pipeline import Pipeline
-
 
 from src.entities import HeartDiseaseModel, DiseaseResponse
 from src.model_routines import load_model_from_path
@@ -22,10 +22,10 @@ def make_predict(
 ) -> List[DiseaseResponse]:
     global model
     try:
-        data = prepare_and_validate_data(request)
+        ids, data = prepare_and_validate_data(request)
         prediction = model.predict(data)
         return [
-            DiseaseResponse(id=id_+1, disease=disease) for id_, disease in enumerate(prediction)
+            DiseaseResponse(id=id_, disease=disease) for id_, disease in zip(ids, prediction)
         ]
     except HTTPException as e:
         raise e
@@ -35,15 +35,20 @@ def make_predict(
 
 app = FastAPI()
 
+start_time = time.time()
+APP_START_DELAY = 30
+APP_DURATION = 100
+
 
 @app.get("/")
 def main():
-    return "Entry point of our predictor"
+    return "Heart Disease prediction model"
 
 
 @app.on_event("startup")
 def load_model():
     global model
+    time.sleep(APP_START_DELAY)
     model_path = os.getenv("PATH_TO_MODEL")
     if model_path is None:
         err = f"PATH_TO_MODEL {model_path} is None"
@@ -52,8 +57,10 @@ def load_model():
     model = load_model_from_path(model_path)
 
 
-@app.get("/health")
+@app.get("/status")
 def health() -> bool:
+    if time.time() - start_time > APP_DURATION:
+        raise RuntimeError("Application runtime limit exceeded.")
     return not (model is None)
 
 

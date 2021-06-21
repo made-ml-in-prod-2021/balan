@@ -3,11 +3,12 @@ kind: Pod
 metadata:
   name: online-inference-resources
   labels:
-    app: online-inference-resources
+    app: online-inference
 spec:
   containers:
     - image: ooptyp/online_inference:v1
       name: online-inference
+
       ports:
         - containerPort: 8000
         resources:
